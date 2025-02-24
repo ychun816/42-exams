@@ -20,7 +20,7 @@ int cd(char *av[], int i)
 	if (chdir(av[1]) == -1)
 	{
 		fd_msg("error: cd: cannot change directory to ");
-		fd_msg("av[i]");
+		fd_msg(av[i]);
 		fd_msg("\n");
 		return (1);
 	}

@@ -1,0 +1,63 @@
+Assignment name: cpp_module_00
+Expected files: Warlock.cpp, Warlock.hpp
+
+Create a class Warlock in canonical (Coplien) form.
+
+Private attributes:
+- name (string)
+- title (string)
+
+Getters (callable on const Warlock):
+- const std::string& getName() const;
+- const std::string& getTitle() const;
+
+Setter:
+- void setTitle(const std::string&);
+
+Constructor:
+- Must take name and title (in that order).
+- No default constructor.
+- No copy constructor or copy assignment.
+
+Examples:
+Warlock bob;                            // Does NOT compile
+Warlock bob("Bob", "the magnificent");  // Compiles
+Warlock jim("Jim", "the nauseating");   // Compiles
+bob = jim;                              // Does NOT compile
+Warlock jack(jim);                      // Does NOT compile
+
+On construction:
+<NAME>: This looks like another boring day.
+
+On destruction:
+<NAME>: My job here is done!
+
+Method:
+void introduce() const;
+// Output: <NAME>: I am <NAME>, <TITLE>!
+
+Example main():
+int main() {
+  Warlock const richard("Richard", "Mistress of Magma");
+  richard.introduce();
+  std::cout << richard.getName() << " - " << richard.getTitle() << std::endl;
+
+  Warlock* jack = new Warlock("Jack", "the Long");
+  jack->introduce();
+  jack->setTitle("the Mighty");
+  jack->introduce();
+
+  delete jack;
+  return 0;
+}
+
+Expected output:
+Richard: This looks like another boring day.
+Richard: I am Richard, Mistress of Magma!
+Richard - Mistress of Magma
+Jack: This looks like another boring day.
+Jack: I am Jack, the Long!
+Jack: I am Jack, the Mighty!
+Jack: My job here is done!
+Richard: My job here is done!
+

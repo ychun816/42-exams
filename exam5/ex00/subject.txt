@@ -51,6 +51,7 @@ int main() {
   return 0;
 }
 
+
 Expected output:
 Richard: This looks like another boring day.
 Richard: I am Richard, Mistress of Magma!
@@ -60,4 +61,3 @@ Jack: I am Jack, the Long!
 Jack: I am Jack, the Mighty!
 Jack: My job here is done!
 Richard: My job here is done!
-

@@ -29,7 +29,6 @@ void Warlock::introduce() const
 }
 
 
-
 int main() 
 {
   Warlock const richard("Richard", "Mistress of Magma");
@@ -46,6 +45,9 @@ int main()
 }
 
 /*
+For Compile:
+g++ -o Warlock Warlock.cpp
+
 Expected output:
 Richard: This looks like another boring day.
 Richard: I am Richard, Mistress of Magma!

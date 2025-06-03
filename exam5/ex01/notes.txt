@@ -1,0 +1,146 @@
+==========================
+Structure for cpp_module_01
+==========================
+
+Project Directory:
+------------------
+cpp_module_01/
+│
+├── Warlock.cpp
+├── Warlock.hpp
+│
+├── ASpell.cpp
+├── ASpell.hpp
+│
+├── ATarget.cpp
+├── ATarget.hpp
+│
+├── Fwoosh.cpp
+├── Fwoosh.hpp
+│
+├── Dummy.cpp
+├── Dummy.hpp
+
+======================
+1. Abstract Class: ASpell
+======================
+File: ASpell.hpp / ASpell.cpp
+
+Attributes:
+- std::string name
+- std::string effects
+
+Methods:
+- ASpell(std::string const& name, std::string const& effects)
+- virtual ~ASpell()
+- std::string getName() const
+- std::string getEffects() const
+- void launch(const ATarget& target) const
+- virtual ASpell* clone() const = 0   (pure virtual)
+
+
+======================
+2. Abstract Class: ATarget
+======================
+File: ATarget.hpp / ATarget.cpp
+
+Attributes:
+- std::string type
+
+Methods:
+- ATarget(std::string const& type)
+- virtual ~ATarget()
+- const std::string& getType() const
+- virtual ATarget* clone() const = 0  (pure virtual)
+- void getHitBySpell(const ASpell& spell) const
+  Output format: <TYPE> has been <EFFECTS>!
+
+
+========================
+3. Concrete Class: Fwoosh
+========================
+File: Fwoosh.hpp / Fwoosh.cpp
+Inherits: ASpell
+
+Constructor:
+- name = "Fwoosh"
+- effects = "fwooshed"
+
+Methods:
+- virtual ASpell* clone() const
+
+
+=======================
+4. Concrete Class: Dummy
+=======================
+File: Dummy.hpp / Dummy.cpp
+Inherits: ATarget
+
+Constructor:
+- type = "Target Practice Dummy"
+
+Methods:
+- virtual ATarget* clone() const
+
+
+========================
+5. Warlock Class
+========================
+File: Warlock.hpp / Warlock.cpp
+
+Attributes:
+- std::string name
+- std::string title
+- std::map<std::string, ASpell*> spells
+
+Constructor:
+- Warlock(std::string const& name, std::string const& title)
+
+Destructor:
+- Cleans up all learned spells
+
+Methods:
+- void setTitle(std::string const&)
+- const std::string& getName() const
+- const std::string& getTitle() const
+- void introduce() const
+  Output: Name: I am Name, Title!
+
+- void learnSpell(ASpell*)
+- void forgetSpell(std::string const&)
+- void launchSpell(std::string const&, const ATarget&)
+
+
+========================
+main.cpp (For testing)
+========================
+int main() {
+    Warlock richard("Richard", "the Titled");
+
+    Dummy bob;
+    Fwoosh* fwoosh = new Fwoosh();
+
+    richard.learnSpell(fwoosh);
+
+    richard.introduce();
+    richard.launchSpell("Fwoosh", bob);
+
+    richard.forgetSpell("Fwoosh");
+    richard.launchSpell("Fwoosh", bob);
+
+    delete fwoosh;
+}
+
+Expected Output:
+Richard: This looks like another boring day.
+Richard: I am Richard, the Titled!
+Target Practice Dummy has been fwooshed!
+Richard: My job here is done!
+
+
+========================
+Build Command (C++98)
+========================
+g++ -Wall -Wextra -Werror -std=c++98 -o warlock \
+    Warlock.cpp ASpell.cpp ATarget.cpp Fwoosh.cpp Dummy.cpp main.cpp
+

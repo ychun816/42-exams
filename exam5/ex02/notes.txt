@@ -1,0 +1,219 @@
+📁 FILE STRUCTURE
+
+  ├── ASpell.hpp / ASpell.cpp          → Abstract spell class
+  ├── ATarget.hpp / ATarget.cpp        → Abstract target class
+  ├── Warlock.hpp / Warlock.cpp        → Warlock class (with SpellBook)
+  ├── Dummy.hpp / Dummy.cpp            → Concrete ATarget: "Target Practice Dummy"
+  ├── BrickWall.hpp / BrickWall.cpp    → Concrete ATarget: "Inconspicuous Red-brick Wall"
+  ├── Fwoosh.hpp / Fwoosh.cpp          → Concrete ASpell: "fwooshed"
+  ├── Fireball.hpp / Fireball.cpp      → Concrete ASpell: "burnt to a crisp"
+  ├── Polymorph.hpp / Polymorph.cpp    → Concrete ASpell: "turned into a critter"
+  ├── SpellBook.hpp / SpellBook.cpp    → Spell manager (non-copyable)
+  ├── TargetGenerator.hpp / .cpp       → Target manager (non-copyable)
+
+========================
+📄 ASpell (Abstract Class)
+- string name
+- string effects
+
+Methods:
+- Constructor (name, effects)
+- virtual ~ASpell()
+- string getName() const
+- string getEffects() const
+- virtual ASpell* clone() const = 0
+- void launch(const ATarget& target) const
+
+========================
+📄 ATarget (Abstract Class)
+- string type
+
+Methods:
+- Constructor (type)
+- virtual ~ATarget()
+- string const& getType() const
+- virtual ATarget* clone() const = 0
+- void getHitBySpell(const ASpell& spell) const
+
+========================
+📄 Warlock
+- string name
+- string title
+- SpellBook book
+
+Methods:
+- Constructor (name, title)
+- ~Warlock()
+- string const& getName() const
+- string const& getTitle() const
+- void setTitle(string const&)
+- void introduce() const
+- void learnSpell(ASpell*)
+- void forgetSpell(string const&)
+- void launchSpell(string const&, ATarget const&)
+Notes:
+- Delegates spell storage to SpellBook
+- Cannot use switch
+
+========================
+📄 SpellBook (Non-copyable)
+- std::map<string, ASpell*> spells
+
+Methods:
+- Constructor / Destructor
+- void learnSpell(ASpell*)              → stores a clone
+- void forgetSpell(string const&)
+- ASpell* createSpell(string const&)    → returns a clone
+Notes:
+- Disallow copying (private copy constructor/operator=)
+
+========================
+📄 TargetGenerator (Non-copyable)
+- std::map<string, ATarget*> targets
+
+Methods:
+- Constructor / Destructor
+- void learnTargetType(ATarget*)              → stores a clone
+- void forgetTargetType(string const&)
+- ATarget* createTarget(string const&)        → returns a clone
+Notes:
+- Disallow copying (private copy constructor/operator=)
+
+========================
+📄 Dummy : public ATarget
+- Constructor sets type to "Target Practice Dummy"
+- Implement clone() → return new Dummy(*this)
+
+========================
+📄 BrickWall : public ATarget
+- Constructor sets type to "Inconspicuous Red-brick Wall"
+- Implement clone() → return new BrickWall(*this)
+
+========================
+📄 Fwoosh : public ASpell
+- Constructor sets name to "Fwoosh", effects to "fwooshed"
+- Implement clone() → return new Fwoosh(*this)
+
+========================
+📄 Fireball : public ASpell
+- Constructor sets name to "Fireball", effects to "burnt to a crisp"
+- Implement clone() → return new Fireball(*this)
+
+========================
+📄 Polymorph : public ASpell
+- Constructor sets name to "Polymorph", effects to "turned into a critter"
+- Implement clone() → return new Polymorph(*this)
+
+
+========================
+  Implementation Steps
+========================
+
+-- Required Classes & Responsibilities --
+
+========================
+[1] ASpell (Abstract Class)
+- Attributes: name, effects
+- Methods:
+  - clone() = 0 (pure virtual)
+  - getName(), getEffects(), launch(const ATarget&)
+
+========================
+[2] ATarget (Abstract Class)
+- Attributes: type
+- Methods:
+  - clone() = 0 (pure virtual)
+  - getType(), getHitBySpell(const ASpell&)
+
+========================
+[3] Dummy (Concrete Class)
+- Inherits ATarget
+- Type: "Target Practice Dummy"
+- Implements: clone()
+
+========================
+[4] Fwoosh, Fireball, Polymorph (Concrete Spells)
+- Inherit ASpell
+- Set name & effect in constructor
+  - Fireball: "burnt to a crisp"
+  - Polymorph: "turned into a critter"
+- Implement: clone()
+
+========================
+[5] BrickWall (Concrete Target)
+- Inherits ATarget
+- Type: "Inconspicuous Red-brick Wall"
+- Implements: clone()
+
+========================
+[6] SpellBook
+- Purpose: Manage known spells
+- Non-copyable
+- Methods:
+  - learnSpell(ASpell*)        => clone & store
+  - forgetSpell(string name)   => delete by name
+  - createSpell(string name)   => return clone
+
+========================
+[7] TargetGenerator
+- Purpose: Manage known targets
+- Non-copyable
+- Methods:
+  - learnTargetType(ATarget*)        => clone & store
+  - forgetTargetType(string type)    => delete by type
+  - createTarget(string type)        => return clone
+
+========================
+[8] Warlock
+- Attributes: name, title, SpellBook
+- Methods:
+  - introduce(), setTitle(), getName(), getTitle()
+  - learnSpell(ASpell*) => delegates to SpellBook
+  - forgetSpell(string) => delegates to SpellBook
+  - launchSpell(string, const ATarget&) => fetch spell from SpellBook and launch
+
+========================
+  Implementation Steps
+========================
+[Step 1] Define abstract base classes ASpell and ATarget
+[Step 2] Implement Dummy and Fwoosh to verify base functionality
+[Step 3] Create Fireball and Polymorph based on Fwoosh
+[Step 4] Create BrickWall based on Dummy
+[Step 5] Implement SpellBook class with internal map of string => ASpell*
+[Step 6] Implement TargetGenerator class with map of string => ATarget*
+[Step 7] Refactor Warlock to:
+         - Own a SpellBook
+         - Delegate learning, forgetting, launching spells
+
+
+         
+========================
+🧪 Sample Main (expected output)
+
+int main() {
+  Warlock richard("Richard", "foo");
+  richard.setTitle("Hello, I'm Richard the Warlock!");
+  BrickWall model1;
+
+  Polymorph* polymorph = new Polymorph();
+  TargetGenerator tarGen;
+
+  tarGen.learnTargetType(&model1);
+  richard.learnSpell(polymorph);
+
+  Fireball* fireball = new Fireball();
+  richard.learnSpell(fireball);
+
+  ATarget* wall = tarGen.createTarget("Inconspicuous Red-brick Wall");
+
+  richard.introduce();
+  richard.launchSpell("Polymorph", *wall);
+  richard.launchSpell("Fireball", *wall);
+}
+
+Expected Output:
+Richard: This looks like another boring day.
+Richard: I am Richard, Hello, I'm Richard the Warlock!!
+Inconspicuous Red-brick Wall has been turned into a critter!
+Inconspicuous Red-brick Wall has been burnt to a crisp!
+Richard: My job here is done!

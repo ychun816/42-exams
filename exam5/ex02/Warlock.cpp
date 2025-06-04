@@ -7,7 +7,7 @@ Warlock::Warlock(const std::string& name, const std::string& title)  : _name(nam
 
 Warlock::~Warlock()
 {
-    std::cout << _name << ": My job here is done!" << std::endl;
+    std::cout << this->_name << ": My job here is done!" << std::endl;
 }    
 
 ////member func 
@@ -34,8 +34,7 @@ void Warlock::introduce() const
 //->Stores a copy of the spell, not the original. -> Provides ownership and safety via deep copying.
 void Warlock::learnSpell(ASpell* spell)
 {
-    if (spell && _spells.find(spell->getName()) == this->_spells.end())
-        this->_spells[spell->getName()] = spell->clone();
+    this->spellBook.learnSpell(spell);
 }
 
 //use std::map -> iterate to find spell name
@@ -43,21 +42,17 @@ void Warlock::learnSpell(ASpell* spell)
 //erase -> remove ptr frm the map (entry)
 void Warlock::forgetSpell(const std::string& spellName)
 {
-    std::map<std::string, ASpell*>::iterator it = this->_spells.find(spellName);
-    
-    if (it != this->_spells.end())
-    {
-        delete it->second;
-        this->_spells.erase(it);
-    }
+    this->spellBook.forgetSpell(spell);
 }
 
 void Warlock::launchSpell(const std::string& spellName, const ATarget& target)
 {
-    //use std::map -> iterate to find spell name -> launch it on target!
-    std::map<std::string, ASpell*>::iterator it = _spells.find(spellName);
+    ASpell* spell = spellBook.createSpell(spellName);
 
-    if (it != _spells.end())
-        it->second->launch(target);
+    if (spell)
+    {
+        spell->launch(target);
+        delete spell;
+    }
 }
 

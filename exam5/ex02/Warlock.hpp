@@ -3,9 +3,12 @@
 
 #include <string>
 #include <iostream>
-#include <map>
+#include <vector>
+// #include <map>
 
 #include "ASpell.hpp"
+#include "ATarget.hpp"
+#include "SpellBook.hpp"
 
 //for ex2
 // Modify Warlock:
@@ -20,7 +23,10 @@ class Warlock
         std::string _title;
 
         //added for ex1
-        std::map<std::string, ASpell*> _spells;
+        // std::map<std::string, ASpell*> _spells;
+
+        //added for ex2
+        SpellBook spellBook;
 
         //constructor
         Warlock();        

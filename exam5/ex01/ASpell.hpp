@@ -1,9 +1,11 @@
-#ifndef ASPELL_H
-#define ASPELL_H
+#ifndef ASPELL_HPP
+#define ASPELL_HPP
 
 #include <iostream>
 #include <string>
 #include <map>
+
+class ATarget;
 
 class ASpell
 {
@@ -13,6 +15,7 @@ class ASpell
 
     public:
         //constructor
+        // ASpell();
         ASpell(std::string const& name, std::string const& effects);
         virtual~ASpell();
 
@@ -22,6 +25,8 @@ class ASpell
 
         //pure virtual method
         virtual ASpell* clone() const = 0;
+
+        void launch(const ATarget& target) const;
 };
 
 #endif

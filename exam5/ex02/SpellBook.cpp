@@ -3,7 +3,6 @@
 SpellBook::SpellBook(){}
 
 // SpellBook::SpellBook(const SpellBook& src){}
-
 // SpellBook& SpellBook::operator=(const SpellBook& src){}
 
 //have to delete one by one!

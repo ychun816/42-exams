@@ -15,14 +15,14 @@
 //By placing them in the private section and not defining them (or sometimes defining them as deleted in modern C++), 
 //the class is explicitly made non-copyable.
 
-class TargetGenerator : public ATarget
+class TargetGenerator
 {
     private:
-        std::map<std::string, ATarget> _targets;
+        std::map<std::string, ATarget*> _targets;
 
         // Copy constructor and copy assignment operator declared but not defined
-        TargetGenerator(const TargetGerator &src);
-        TargetGenerator& operator=(const TargetGenerator &src);
+        TargetGenerator(const TargetGenerator& src);
+        TargetGenerator& operator=(const TargetGenerator& src);
 
     public:
         TargetGenerator();
@@ -32,7 +32,6 @@ class TargetGenerator : public ATarget
         void forgetTargetType(const std::string& targetType);
         ATarget* createTarget(const std::string& targetType); 
 
-    
 };
 
 #endif 

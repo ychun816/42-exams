@@ -5,7 +5,7 @@ TargetGenerator::TargetGenerator(){}
 //delete one by one
 TargetGenerator::~TargetGenerator()
 {
-    for (std::map<std::string, ATarget*>::iterator it = _targets.begin(), it != _targets.end(), ++it)
+    for (std::map<std::string, ATarget*>::iterator it = _targets.begin(); it != _targets.end(); ++it)
         delete it->second;
     //this->_targets.clear();
 }
@@ -23,7 +23,7 @@ void TargetGenerator::forgetTargetType(const std::string& targetType)
     if (it != _targets.end())
     {
         delete it->second;
-        targets.erase(it);
+        _targets.erase(it);
     }
 }
 

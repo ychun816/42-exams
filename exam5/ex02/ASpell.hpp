@@ -5,6 +5,8 @@
 #include <string>
 #include <map>
 
+#include "ATarget.hpp"
+
 class ATarget;
 
 class ASpell
@@ -15,9 +17,11 @@ class ASpell
 
     public:
         //constructor
-        // ASpell();
-        ASpell(std::string const& name, std::string const& effects);
-        virtual~ASpell();
+        ASpell();
+        ASpell(ASpell const &src);
+        ASpell(std::string const &name, std::string const &effects);
+        ASpell& operator=(ASpell const &src);
+        virtual ~ASpell();
 
         //getter
         std::string getName() const;

@@ -1,9 +1,9 @@
-#include "Brickwall.hpp"
+#include "BrickWall.hpp"
 
-Brickwall::Brickwall() : ATarget("Inconspicuous Red-brick Wall"){}
-Brickwall::~Brickwall(){}
+ BrickWall:: BrickWall() : ATarget("Inconspicuous Red-brick Wall"){}
+ BrickWall::~ BrickWall(){}
 
-ATarget* Brickwall::clone() const
+ATarget*  BrickWall::clone() const
 {
-    return (new Brickwall(*this));
+    return (new  BrickWall(*this));
 }

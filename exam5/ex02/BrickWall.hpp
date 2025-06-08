@@ -5,11 +5,11 @@
 
 //- BrickWall: type = "Inconspicuous Red-brick Wall"
 
-class Brickwall : public ATarget
+class BrickWall : public ATarget
 {
     public:
-        Brickwall();
-        virtual ~Brickwall();
+        BrickWall();
+        virtual ~BrickWall();
         virtual ATarget* clone() const;
 };
 

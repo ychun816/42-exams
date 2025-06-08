@@ -5,11 +5,12 @@
 #include <string>
 
 #include "ASpell.hpp"
+class ASpell; 
 
 //- type = "Target Practice Dummy"
 class ATarget
 {
-    protected:
+    protected: //private?
         std::string _type;
 
     public:

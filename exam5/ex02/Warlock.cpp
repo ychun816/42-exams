@@ -42,7 +42,7 @@ void Warlock::learnSpell(ASpell* spell)
 //erase -> remove ptr frm the map (entry)
 void Warlock::forgetSpell(const std::string& spellName)
 {
-    this->spellBook.forgetSpell(spell);
+    this->spellBook.forgetSpell(spellName);
 }
 
 void Warlock::launchSpell(const std::string& spellName, const ATarget& target)

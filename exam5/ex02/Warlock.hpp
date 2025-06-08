@@ -46,8 +46,8 @@ class Warlock
 
         //added ex1
         void learnSpell(ASpell* spell);
-        void forgetSpell(const std::string& spell);
-        void launchSpell(const std::string&, const ATarget& spell);
+        void forgetSpell(const std::string& spellName);
+        void launchSpell(const std::string& spellName, const ATarget& target);
 };
 
 #endif 

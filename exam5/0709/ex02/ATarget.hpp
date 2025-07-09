@@ -1,0 +1,32 @@
+#ifndef ATARGET_HPP
+#define ATARGET_HPP
+
+#include <iostream>
+#include <string>
+
+class ASpell;
+
+class ATarget
+{
+    protected:
+        std::string _type;
+
+    public:
+        ATarget() : _type(){}
+        ATarget(std::string const& typeName) : _type(typeName){}
+        ATarget(const ATarget& src); 
+        ATarget& operator=(const ATarget& src);
+        virtual ~ATarget(){}
+
+        //getter 
+        const std::string& getType() const {return this->_type;}
+
+        //virtual pure func
+        virtual ATarget* clone() const = 0;
+
+        void getHitBySpell(const ASpell& effects) const;
+
+} ;
+
+
+#endif

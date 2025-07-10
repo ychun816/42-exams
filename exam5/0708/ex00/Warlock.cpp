@@ -1,19 +1,14 @@
 #include "Warlock.hpp"
 
 //con-destructor
-Warlock::~Warlock()
-{
-    std::cout << this->_name << ": My job here is done!" << std::endl;
-}
-Warlock::Warlock(const std::string& name, const std::string& title) : _name(name), _title(title)
+Warlock::Warlock(const std::string name, const std::string title) : _name(name), _title(title)
 {
     std::cout << _name << ": This looks like another boring day." << std::endl;
 }
 
-//Setter
-void Warlock::setTitle(const std::string& title)
+Warlock::~Warlock()
 {
-    this->_title = title;
+    std::cout << this->_name << ": My job here is done!" << std::endl;
 }
 
 //funcs

@@ -5,6 +5,11 @@
 #include <string>
 #include <map>
 
+//using ASpell and ATarget as pointers or references
+// keeps the header lightweight and avoids circular dependencies.
+//Limitation: cannot:
+//-Use ASpell or ATarget as by-value parameters or member variables.
+//-Call their methods inside inline functions in the header.
 class ASpell;
 class ATarget;
 
@@ -38,8 +43,4 @@ class Warlock
 } ;
 
 #endif
-
-
-
-
 

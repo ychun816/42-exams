@@ -32,32 +32,3 @@ class ASpell
 };
 
 #endif 
-
-
-
-
-void Warlock::learnSepll(const ASpell* spell)
-{
-    if (spell && it == _spells.end())
-    {
-        _spells[spell->getName()] = spell->clone();
-    }
-}
-
-
-delete
-
-std::map<std::string, ASpell*>::iterator it = _spells.find(spellName);
-
-if (it != _spells.end())
-{
-    delete it->second;
-    _spells.erase(it);
-}
-
-launch (const std::string spellName, const ATarget& target)
-{
-    std::map<std::string, ASpell*>::iterator it = _spells.find(spellName);
-    if (it != _spells.end())
-        it->second->launch(target);
-}

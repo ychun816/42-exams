@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 
-
+class ASpell;
+class ATarget;
 
 class Warlock
 {
@@ -13,6 +15,8 @@ class Warlock
         std::string _title;
 
         // Warlock(const std::string name, const std::string title);
+        std::map<std::string, ASpell*> _spells;
+
 
     public:
         Warlock();
@@ -28,6 +32,10 @@ class Warlock
 
         //func
         void introduce() const;
+
+        void learnSpell(const ASpell* spell);
+        void forgetSpell(const std::string spellName);
+        void launchSpell(const std::string spellName, const ATarget& target);
 
 };
 

@@ -1,6 +1,4 @@
 #include "Warlock.hpp"
-#include "ASpell.hpp"
-#include "ATarget.hpp"
 
 //<NAME>: This looks like another boring day.
 Warlock::Warlock() : _name(""), _title("")
@@ -16,14 +14,12 @@ Warlock::Warlock(const std::string name, const std::string title) : _name(name),
 //<NAME>: My job here is done!
 Warlock::~Warlock()
 {
-
-    
     std::cout << _name << ": My job here is done!" << std::endl;
 }
 
-
+//func
 //<NAME>: I am <NAME>, <TITLE> !
 void Warlock::introduce() const
 {
-    std::cout << _name << ": I am " << _name << ", " << _title << std::endl;
+    std::cout << _name << ": I am " << _name << ", " << _title << "!" << std::endl;
 }

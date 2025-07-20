@@ -19,7 +19,7 @@ class ASpell
         ASpell& operator=(const ASpell& src);
         virtual~ASpell(){}
 
-        //getter 
+        //getter
         std::string getName() const {return this->_name;}
         std::string getEffects() const {return this->_effects;}
 
@@ -28,36 +28,6 @@ class ASpell
 
         void launch(const ATarget& target) const;
 
-
 };
 
-#endif 
-
-
-
-
-void Warlock::learnSepll(const ASpell* spell)
-{
-    if (spell && it == _spells.end())
-    {
-        _spells[spell->getName()] = spell->clone();
-    }
-}
-
-
-delete
-
-std::map<std::string, ASpell*>::iterator it = _spells.find(spellName);
-
-if (it != _spells.end())
-{
-    delete it->second;
-    _spells.erase(it);
-}
-
-launch (const std::string spellName, const ATarget& target)
-{
-    std::map<std::string, ASpell*>::iterator it = _spells.find(spellName);
-    if (it != _spells.end())
-        it->second->launch(target);
-}
+#endif

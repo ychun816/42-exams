@@ -17,13 +17,38 @@ Warlock::Warlock(const std::string name, const std::string title) : _name(name),
 Warlock::~Warlock()
 {
 
-    
     std::cout << _name << ": My job here is done!" << std::endl;
 }
 
-
+//func
 //<NAME>: I am <NAME>, <TITLE> !
 void Warlock::introduce() const
 {
-    std::cout << _name << ": I am " << _name << ", " << _title << std::endl;
+    std::cout << _name << ": I am " << _name << ", " << _title << "!" << std::endl;
+}
+
+
+void Warlock::learnSpell(const ASpell* spell)
+{
+    book.learnSpell(spell);
+
+}
+
+
+void Warlock::forgetSpell(const std::string spellName)
+{
+    book.forgetSpell(spellName);
+
+}
+
+void Warlock::launchSpell(const std::string spellName, const ATarget& target)
+{
+    ASpell* spell = book.createSpell(spellName);
+
+    if (spell)
+    {
+        spell->launch(target);
+        delete spell;
+    }
+
 }

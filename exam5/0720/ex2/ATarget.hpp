@@ -18,7 +18,7 @@ class ATarget
         ATarget& operator=(const ATarget& src);
         virtual~ATarget(){}
 
-        //getter 
+        //getter
         std::string getType() const {return this->_type;}
 
         //func
@@ -27,4 +27,4 @@ class ATarget
         void getHitBySpell(const ASpell& spell) const;
 };
 
-#endif 
+#endif

@@ -16,10 +16,8 @@ ATarget& ATarget::operator=(const ATarget& src)
     return (*this);
 }
 
-//func
 //<TYPE> has been <EFFECTS>!
 void ATarget::getHitBySpell(const ASpell& spell) const
 {
     std::cout << _type << " has been " << spell.getEffects() << std::endl;
 }
-

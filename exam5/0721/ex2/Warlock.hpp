@@ -1,0 +1,38 @@
+#ifndef WARLOCK_HPP
+#define WARLOCK_HPP
+
+#include <iostream>
+#include <string>
+#include "SpellBook.hpp"
+class ASpell;
+class ATarget;
+
+class Warlock
+{
+    private:
+        std::string _name;
+        std::string _title;
+
+        SpellBook book;
+
+    public:
+        Warlock();
+        Warlock(std::string name, std::string title);
+        ~Warlock();
+
+        //getter
+        std::string getName()const{return this->_name;}
+        std::string getTitle() const{return this->_title;}
+
+        //setter
+        void setTitle(std::string title){this->_title = title;}
+
+        //func
+        void introduce()const;
+
+        void learnSpell(const ASpell* spell);
+        void forgetSpell(const std::string spellName);
+        void launchSpell(const std::string spellName, const ATarget& target);
+};
+
+#endif

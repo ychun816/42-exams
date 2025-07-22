@@ -247,8 +247,3 @@ You may want to add this to the top of your README if you're including this sect
 ```
 
 ---
-
-
-
-
-

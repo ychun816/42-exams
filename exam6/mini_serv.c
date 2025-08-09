@@ -138,15 +138,51 @@ int main(int ac, char* av[])
         // Loop over all possible file descriptors
         for (int idI = 0; idI <= fdMax; idI++)
         {
+            // If an existing client sent data
             // If the listening socket is ready to read -> new connection
-            if (FD_ISSET(fdI, &))
+            if (FD_ISSET(fdI, &readfds) && fdI != sockfd)
+            {
+                int res = recv(fdI, bufferRead, 65536, 0);
 
+                // If recv returns <= 0, the client disconnected
+                if (res <= 0)
+                {
+                    sprintf(bufferWrite, "server: client %d just left\n", clients[fdI].id);
+                    sendAll(fdI);           // notify others
+                    FD_CLR(fdI, &active);   // remove from active set
+                    close(fdI);             // close socket   
+                    break;     
+                }
+            }
+            else
+            {
+                // Append received bytes to client's message buffer
+                for (int i = 0; j = strlen(clients[fdI].msg); i < res i++, j++)
+                {
+                    clients[fdI].msg[j] = bufferRead[i];
 
+                    // If we got a complete line
+                    if (client[fdI].msg[j] == '\n')
+                    {
+                        clients[fdI].msg[j] == '\0'; // terminate string
+
+                        // Prepare "client X: message" format
+                        sprintf(bufferWrite, "client %d: %s\n", clients[fdI].id, clients[fdI].msg);
+
+                        // Send to all other clients
+                        sendAll(fdI);
+
+                        // Clear the message buffer for this client
+                        bzero(&clients[fdI].msg, strlen(clients[fdI].msg));
+
+                        // Reset j so that we start from 0 in buffer again
+                        j = -1;
+                    }
+                }
+                break; // go back to select()
+            }
         }
 
-
-
     }
-
 
 }

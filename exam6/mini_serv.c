@@ -23,7 +23,7 @@ fd_set readfds, writefds, active;
 
 // Track the highest file descriptor in use
 // Track the next available client ID
-int idMax = 0;
+int fdMax = 0;
 int idNext = 0;
 
 // Buffers for reading and sending data
@@ -49,7 +49,7 @@ void ft_error(char *str)
 // Sends the contents of bufferWrite to all connected clients except 'not'
 void send_all(int not)
 {
-    for (int i = 0; i <= idMax; i++)
+    for (int i = 0; i <= fdMax; i++)
     {
         if (FD_ISSET(i, &writefds) && i != not)
             send(i, bufferWrite, strlen(bufferWrite), 0); // send prepared message
@@ -112,7 +112,7 @@ int main(int ac, char* av[])
         FD=3 now in LISTEN state:
         Incoming SYN packets -> connection queue
     */
-    if ((bind(sockfd, (const struct sockAddr*)&servAddr, sizeof(servAddr))) < 0)
+    if ((bind(sockfd, (const struct sockaddr *)&servAddr, sizeof(servAddr))) < 0)
         ft_error(NULL);
     if (listen(sockfd, 10) < 0)  //10 = backlog queue length for pending connections
         ft_error(NULL);
@@ -126,7 +126,7 @@ int main(int ac, char* av[])
     //    - Receive messages from clients
     //    - Handle disconnections
     //    - Broadcast messages via sendAll()
-    While(1)
+    while(1)
     {
         // Copy active set into readfds and writefds for select()
         readfds = writefds = active;
@@ -136,10 +136,30 @@ int main(int ac, char* av[])
             continue; //ignore error frm select
         
         // Loop over all possible file descriptors
-        for (int idI = 0; idI <= fdMax; idI++)
+        for (int fdI = 0; fdI <= fdMax; fdI++)
         {
-            // If an existing client sent data
             // If the listening socket is ready to read -> new connection
+            if (FD_ISSET(fdI, &readfds) && fdI == sockfd)
+            {
+                int connfd = accept(sockfd,(struct sockaddr *)&servAddr, &len);
+                if (connfd < 0)
+                    continue;// ignore if accept fails
+                
+                // Update max FD if needed
+                fdMax = connfd > fdMax ? connfd : fdMax;
+            
+                // Assign new client ID and clear their message buffer
+                clients[connfd].id = idNext++;
+                FD_SET(connfd, &active); // add to active set
+
+                // Announce arrival to all other clients
+                sprintf(bufferWrite, "server: client %d just arrived\n", clients[connfd].id);
+                send_all(connfd);
+
+                break; // go back to select()
+            }
+
+            // If an existing client sent data
             if (FD_ISSET(fdI, &readfds) && fdI != sockfd)
             {
                 int res = recv(fdI, bufferRead, 65536, 0);
@@ -148,38 +168,38 @@ int main(int ac, char* av[])
                 if (res <= 0)
                 {
                     sprintf(bufferWrite, "server: client %d just left\n", clients[fdI].id);
-                    sendAll(fdI);           // notify others
+                    send_all(fdI);           // notify others
                     FD_CLR(fdI, &active);   // remove from active set
                     close(fdI);             // close socket   
                     break;     
                 }
-            }
-            else
-            {
-                // Append received bytes to client's message buffer
-                for (int i = 0; j = strlen(clients[fdI].msg); i < res i++, j++)
+                else
                 {
-                    clients[fdI].msg[j] = bufferRead[i];
-
-                    // If we got a complete line
-                    if (client[fdI].msg[j] == '\n')
+                    // Append received bytes to client's message buffer
+                    for (int i = 0, j = strlen(clients[fdI].msg); i < res; i++, j++)
                     {
-                        clients[fdI].msg[j] == '\0'; // terminate string
-
-                        // Prepare "client X: message" format
-                        sprintf(bufferWrite, "client %d: %s\n", clients[fdI].id, clients[fdI].msg);
-
-                        // Send to all other clients
-                        sendAll(fdI);
-
-                        // Clear the message buffer for this client
-                        bzero(&clients[fdI].msg, strlen(clients[fdI].msg));
-
-                        // Reset j so that we start from 0 in buffer again
-                        j = -1;
+                        clients[fdI].msg[j] = bufferRead[i];
+    
+                        // If we got a complete line
+                        if (clients[fdI].msg[j] == '\n')
+                        {
+                            clients[fdI].msg[j] = '\0'; // terminate string
+    
+                            // Prepare "client X: message" format
+                            sprintf(bufferWrite, "client %d: %s\n", clients[fdI].id, clients[fdI].msg);
+    
+                            // Send to all other clients
+                            send_all(fdI);
+    
+                            // Clear the message buffer for this client
+                            bzero(&clients[fdI].msg, strlen(clients[fdI].msg));
+    
+                            // Reset j so that we start from 0 in buffer again
+                            j = -1;
+                        }
                     }
+                    break; // go back to select()
                 }
-                break; // go back to select()
             }
         }
 

@@ -1,6 +1,6 @@
 # 🖥 Non-Blocking Multi-Client TCP Mini Server
 
-This document explains how to build a **non-blocking, multi-client TCP server** in C using `bind()`, `listen()`, `select()`, `accept()`, and `recv()`.  
+How to build a **non-blocking, multi-client TCP server** in C using `bind()`, `listen()`, `select()`, `accept()`, and `recv()`.  
 These five core functions work together to prepare the listening socket, wait for activity, accept incoming clients, and receive data without blocking.  
 
 在非阻塞（Non-Blocking）、多客戶端 TCP 伺服器中，通常會用到 **五個核心函式**：  

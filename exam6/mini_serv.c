@@ -1,10 +1,11 @@
-#include <string.h>     // for strlen, bzero, sprintf
 #include <unistd.h>     // for write, close
+#include <string.h>     // for strlen, bzero, sprintf
+#include <stdlib.h>     // for exit, atoi
+#include <stdio.h>      // for sprintf
+
 #include <netdb.h>      // for networking definitions (not heavily used here)
 #include <sys/socket.h> // for socket, bind, listen, accept, send, recv
 #include <netinet/in.h> // for sockaddr_in, htons, htonl
-#include <stdlib.h>     // for exit, atoi
-#include <stdio.h>      // for sprintf
 
 //Structure to store each client's ID and partial message buffer
 typedef struct s_clients
@@ -62,8 +63,10 @@ void send_all(int not)
  * 1. check arg
  * 2. creat TCP socket
  * 3. initialize fd_set & client array
- * 4. 
- * 5. 
+ * 4. Prepare the server address
+ * 5. Binding
+ * 6. select() -> start server loop
+ * 7. 
  */
 int main(int ac, char* av[])
 {
@@ -206,3 +209,87 @@ int main(int ac, char* av[])
     }
 
 }
+
+
+/*
+//socket
+int socket(int domain, int type, int protocol);
+
+//FD_ZERO
+void FD_ZERO(fd_set *set);
+
+//bzero
+void bzero(void *s, size_t n);
+
+//FD_SET
+void FD_SET(int fd, fd_set *set);
+
+//struct sockaddr_in
+struct sockaddr_in {
+    sa_family_t    sin_family; // address family: AF_INET
+    in_port_t      sin_port;   // port in network byte order
+    struct in_addr sin_addr;   // internet address
+    // ...
+};
+
+// uint32_t htonl(uint32_t hostlong);
+// uint16_t htons(uint16_t hostshort);
+htonl = "host to network long" (32 bits, e.g. IP address)
+htons = "host to network short" (16 bits, e.g. port number)
+
+
+
+//bind
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
+//listen
+int listen(int sockfd, int backlog);
+
+*/
+
+
+/*
+// bind = assign address/port to the socket
+// listen = start waiting for incoming connections on that socket
+
+//BIND
+- Purpose: 
+  Assigns a local address (IP and port) to the socket.
+- What it does: 
+  Tells the OS, "I want this socket to receive connections on this IP and port."
+- Example:
+  bind(sockfd, (const struct sockaddr *)&servAddr, sizeof(servAddr));
+- Without bind: 
+  The socket has no address, so clients can't connect to it.
+
+//LISTEN
+- Purpose: 
+  Marks the socket as a passive socket that will accept incoming connection requests.
+- What it does: 
+  Tells the OS, "Start listening for incoming connections on this socket."
+- Example:
+  listen(sockfd, 10);
+- Without listen: 
+  The socket cannot accept connections (with accept()).
+*/
+
+/* SERVER LOOP
+//select
+int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+
+//FD_SET
+void FD_SET(int fd, fd_set *set);
+
+//FD_ISSET
+int FD_ISSET(int fd, fd_set *set);
+
+//accept
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+//recv
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+
+//FD_CLR
+void FD_CLR(int fd, fd_set *set);
+
+*/
